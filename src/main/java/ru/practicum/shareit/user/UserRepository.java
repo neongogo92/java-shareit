@@ -10,7 +10,7 @@ public interface UserRepository {
 
     User update(User user);
 
-    Optional<User> findById(Integer id);
+    User findById(Integer id);
 
     void deleteById(int id);
 

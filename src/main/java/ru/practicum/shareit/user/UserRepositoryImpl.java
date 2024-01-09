@@ -2,6 +2,7 @@ package ru.practicum.shareit.user;
 
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.exception.ConflictException;
+import ru.practicum.shareit.exception.NotFoundException;
 
 import java.util.*;
 
@@ -50,13 +51,17 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(Integer id) {
-        return Optional.ofNullable(usersById.get(id));
+    public User findById(Integer id) {
+        User user = usersById.get(id);
+        if (user == null) {
+            throw new NotFoundException("Пользователь с id = " + id + " не найден.");
+        }
+        return user;
     }
 
     @Override
     public void deleteById(int id) {
-        User user = findById(id).get();
+        User user = findById(id);
         usersByEmail.remove(user.getEmail());
         usersById.remove(id);
     }
@@ -65,6 +70,7 @@ public class UserRepositoryImpl implements UserRepository {
     public Optional<User> getUserByEmail(String email) {
         return Optional.ofNullable(usersByEmail.get(email));
     }
+
 
     private int getUserId() {
         return ++userId;

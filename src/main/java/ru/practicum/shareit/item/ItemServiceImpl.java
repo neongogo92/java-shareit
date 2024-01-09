@@ -69,8 +69,7 @@ import java.util.List;
     }
 
     private User findUserIfExists(Integer userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("Пользователь с id = " + userId + " не найден."));
+        return userRepository.findById(userId);
     }
 
     private Item findItemIfExists(Integer itemId) {

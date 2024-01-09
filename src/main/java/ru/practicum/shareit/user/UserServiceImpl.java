@@ -24,8 +24,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto findUserById(Integer id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Пользователь с заданным id не найден;"));
+        User user = userRepository.findById(id);
         return UserMapper.toUserDto(user);
     }
 
@@ -49,7 +48,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private void checkUserExists(Integer id) {
-        userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Пользователь с id = " + id + " не найден."));
+        userRepository.findById(id);
     }
 }
