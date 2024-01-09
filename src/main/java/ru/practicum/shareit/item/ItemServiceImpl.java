@@ -1,6 +1,6 @@
 package ru.practicum.shareit.item;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -10,16 +10,13 @@ import ru.practicum.shareit.user.UserRepository;
 
 import java.util.List;
 
-@Service
-public class ItemServiceImpl implements ItemService {
-    private ItemRepository itemRepository;
-    private UserRepository userRepository;
+    @Service
+    @RequiredArgsConstructor
+    public class ItemServiceImpl implements ItemService {
 
-    @Autowired
-    public ItemServiceImpl(ItemRepository itemRepository, UserRepository userRepository) {
-        this.itemRepository = itemRepository;
-        this.userRepository = userRepository;
-    }
+        private final ItemRepository itemRepository;
+        private final UserRepository userRepository;
+
 
     @Override
     public ItemDto addItem(int userId, ItemDto itemDto) {

@@ -47,7 +47,9 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     @Override
     public List<Item> search(String text) {
-        if (text.isBlank()) return new ArrayList<>();
+        if (text.isBlank()) {
+            return new ArrayList<>();
+        }
         return items.values()
                 .stream()
                 .filter(i -> isMatch(i, text))

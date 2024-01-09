@@ -15,8 +15,7 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class
-ItemDto {
+public class ItemDto {
     private Integer id;
     @NotBlank(groups = OnCreate.class, message = "Имя должно быть заполнено.")
     @CustomNotEmpty(groups = OnUpdate.class, message = "Имя должно быть заполнено.")
