@@ -38,8 +38,8 @@ class UserControllerTest {
 
     private UserDto userDto = new UserDto(
             1L,
-            "Richard Gere",
-            "richard@yandex.ru");
+            "Ивлеева",
+            "ivl@yandex.ru");
 
     @Test
     void createNewUser() throws Exception {

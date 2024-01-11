@@ -104,7 +104,7 @@ public class ItemRequestServiceImplTest {
         item.setId(1L);
         item.setAvailable(true);
         item.setName("Шуруповерт");
-        item.setDescription("Надежный, бесшумный, мощный");
+        item.setDescription("Бесщеточный, две скорости, быстросъемное");
         item.setItemRequest(itemRequest);
         item.setOwner(new User());
         when(itemRepository.findByItemRequest_Id(anyLong())).thenReturn(List.of(item));

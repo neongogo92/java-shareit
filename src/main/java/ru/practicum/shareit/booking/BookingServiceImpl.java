@@ -32,7 +32,7 @@ public class BookingServiceImpl implements BookingService {
         Item item = itemRepository.findByIdAndOwner_IdIsNot(bookingDto.getItemId(), userId)
                 .orElseThrow(() -> new NotFoundException("Вещь с id = " + itemId + " не найдена."));
         if (!item.getAvailable() || !validateDateOfBooking(itemId, bookingDto.getStart(), bookingDto.getEnd())) {
-            throw new ValidationException("Данная вещь недоступна для бронирования.");
+            throw new ValidationException("Бронирование недоступно.");
         }
         Booking savedBooking = bookingRepository.save(BookingMapper.toBooking(bookingDto, booker, item));
         return BookingMapper.toBookingDto(savedBooking);
@@ -43,7 +43,7 @@ public class BookingServiceImpl implements BookingService {
         findUserIfExists(userId);
         Booking booking = findBookingIfExists(bookingId);
         if (booking.getItem().getOwner().getId() != userId) {
-            throw new ForbiddenException("Данная операция может быть выполнено только владельцем вещи.");
+            throw new ForbiddenException("Данная операция может быть выполнена только владельцем вещи.");
         }
         if (!BookingStatus.WAITING.equals(booking.getStatus())) {
             throw new ValidationException("Статус уже изменен.");
@@ -66,7 +66,7 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = findBookingIfExists(bookingId);
         if (booking.getBooker().getId() != userId && booking.getItem().getOwner().getId() != userId) {
             throw new ForbiddenException("Данная операция может быть выполнена либо автором бронирования, " +
-                    "либо владельцем вещи, к которой относится бронирование");
+                    "либо владельцем вещи.");
         }
         return BookingMapper.toBookingDto(booking);
     }

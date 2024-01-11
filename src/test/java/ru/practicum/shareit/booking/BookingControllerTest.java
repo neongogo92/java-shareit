@@ -41,7 +41,7 @@ public class BookingControllerTest {
     public void createBookingDto() {
         bookingDto = new BookingDto(1L, LocalDateTime.now().plusHours(1),
                 LocalDateTime.now().plusDays(2), BookingStatus.WAITING);
-        bookingDto.setItem(new ItemForBookingDto(10L, "Переноска для кота"));
+        bookingDto.setItem(new ItemForBookingDto(10L, "Перфоратор"));
         bookingDto.setBooker(new UserForBookingDto(2L));
     }
 

@@ -30,8 +30,8 @@ public class ItemControllerTest {
     private ItemService itemService;
     @Autowired
     private MockMvc mvc;
-    private ItemShortDto itemShortDto = new ItemShortDto(1L, "Гитара",
-            "Cемиструнная", true, 10L, null);
+    private ItemShortDto itemShortDto = new ItemShortDto(1L, "Шина",
+            "RunFlat", true, 10L, null);
 
     @Test
     public void addItem() throws Exception {
@@ -125,7 +125,7 @@ public class ItemControllerTest {
     @Test
     public void addComment() throws Exception {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS");
-        CommentDto commentDto = new CommentDto(11L, "Играет как по нотам", "Валера", null);
+        CommentDto commentDto = new CommentDto(11L, "Очень жесткая и шумная((", "Доминик", null);
         when(itemService.addComment(anyLong(), anyLong(), any()))
                 .thenReturn(commentDto);
 
@@ -145,7 +145,7 @@ public class ItemControllerTest {
     }
 
     private ItemDto createItemDto() {
-        return new ItemDto(1L, "Лопата обыкновенная", "Копает хорошо", true,
+        return new ItemDto(1L, "Apple Iphone 20 Mega Max Plus Pro", "Звонит", true,
                 10L, null);
     }
 }

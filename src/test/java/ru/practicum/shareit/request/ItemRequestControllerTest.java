@@ -31,12 +31,12 @@ public class ItemRequestControllerTest {
     @Autowired
     private MockMvc mvc;
     private ItemRequestDto itemRequestDto = new ItemRequestDto(1L,
-            "Ищу синего мишку из СССР", null, List.of(new ItemShortDto(1L, "Гитара",
-            "Cемиструнная", true, 10L, null)));
+            "Ищу елку розовую", null, List.of(new ItemShortDto(1L, "Перфоратор",
+            "Макита", true, 10L, null)));
 
     @Test
     public void addRequest() throws Exception {
-        ItemRequestShortDto requestShortDto = new ItemRequestShortDto(1L, "Ищу синего мишку из СССР",
+        ItemRequestShortDto requestShortDto = new ItemRequestShortDto(1L, "Ищу елку розовую",
                 LocalDateTime.now());
         when(itemRequestService.addRequest(anyLong(), any()))
                 .thenReturn(requestShortDto);

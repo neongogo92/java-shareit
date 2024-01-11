@@ -38,8 +38,8 @@ public class UserServiceImpTest {
     void testFindUser() {
         User user = new User();
         user.setId(1L);
-        user.setName("Петр Петрович");
-        user.setEmail("email@email.com");
+        user.setName("Петр");
+        user.setEmail("e@mail.com");
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
         UserDto result = userService.findUserById(1L);
         assertEquals(result.getId(), user.getId());
@@ -50,7 +50,7 @@ public class UserServiceImpTest {
     @Test
     void testCreateUser() {
         when(userRepository.save(any())).thenReturn(new User());
-        userService.createUser(new UserDto(null, "Иванов Иван", "ii@mail.ru"));
+        userService.createUser(new UserDto(null, "Иванов Иван", "i@mail.ru"));
         verify(userRepository, times(1)).save(any());
     }
 
@@ -58,7 +58,7 @@ public class UserServiceImpTest {
     void testUpdateUser_NotFoundException() {
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
         NotFoundException result = assertThrows(NotFoundException.class,
-                () -> userService.updateUser(1L, new UserDto(null, "Иванов Иван", "ii@mail.ru")));
+                () -> userService.updateUser(1L, new UserDto(null, "Иванов Иван", "i@mail.ru")));
         assertEquals(result.getMessage(), "Пользователь с id = 1 не найден.");
     }
 
@@ -68,9 +68,9 @@ public class UserServiceImpTest {
         User user = new User();
         user.setId(1L);
         user.setName("Иванов Иван");
-        user.setEmail("ii@mail.ru");
+        user.setEmail("i@mail.ru");
         when(userRepository.save(any())).thenReturn(user);
-        UserDto userDto = new UserDto(null, "Иванов Иван", "ii@mail.ru");
+        UserDto userDto = new UserDto(null, "Иванов Иван", "i@mail.ru");
         UserDto result = userService.updateUser(1L, userDto);
         verify(userRepository, times(1)).save(any());
         assertEquals(user.getEmail(), result.getEmail());

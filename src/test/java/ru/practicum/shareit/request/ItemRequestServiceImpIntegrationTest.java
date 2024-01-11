@@ -33,11 +33,11 @@ public class ItemRequestServiceImpIntegrationTest {
         user = new User();
         user.setId(1L);
         user.setName("Петр Петрович");
-        user.setEmail("email@email.com");
+        user.setEmail("111@mail.com");
         user = userRepository.save(user);
 
         itemRequest = new ItemRequest();
-        itemRequest.setDescription("Самовар найдись.");
+        itemRequest.setDescription("Нужен маслосъемник");
         itemRequest.setRequestor(user);
         itemRequest.setCreated(LocalDateTime.now());
         itemRequestRepository.save(itemRequest);

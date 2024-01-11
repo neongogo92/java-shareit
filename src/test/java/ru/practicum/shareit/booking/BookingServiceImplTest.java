@@ -71,7 +71,7 @@ public class BookingServiceImplTest {
         when(itemRepository.findByIdAndOwner_IdIsNot(anyLong(), anyLong())).thenReturn(Optional.of(item));
         ValidationException result = assertThrows(ValidationException.class,
                 () -> bookingService.addBooking(1L, bookingRequestDto));
-        assertEquals(result.getMessage(), "Данная вещь недоступна для бронирования.");
+        assertEquals(result.getMessage(), "Бронирование недоступно.");
     }
 
     @Test
@@ -83,7 +83,7 @@ public class BookingServiceImplTest {
         when(bookingRepository.findByItem_Id(anyLong())).thenReturn(List.of(booking));
         ValidationException result = assertThrows(ValidationException.class,
                 () -> bookingService.addBooking(1L, bookingRequestDto));
-        assertEquals(result.getMessage(), "Данная вещь недоступна для бронирования.");
+        assertEquals(result.getMessage(), "Бронирование недоступно.");
     }
 
     @Test
@@ -95,7 +95,7 @@ public class BookingServiceImplTest {
 
         ForbiddenException result = assertThrows(ForbiddenException.class,
                 () -> bookingService.approveOrRejectBooking(111L, 1L, true));
-        assertEquals(result.getMessage(), "Данная операция может быть выполнено только владельцем вещи.");
+        assertEquals(result.getMessage(), "Данная операция может быть выполнена только владельцем вещи.");
     }
 
     @Test
@@ -157,7 +157,7 @@ public class BookingServiceImplTest {
         ForbiddenException result = assertThrows(ForbiddenException.class,
                 () -> bookingService.getBooking(111L, booking.getId()));
         assertEquals(result.getMessage(), "Данная операция может быть выполнена либо автором бронирования, " +
-                "либо владельцем вещи, к которой относится бронирование");
+                "либо владельцем вещи.");
     }
 
     @Test

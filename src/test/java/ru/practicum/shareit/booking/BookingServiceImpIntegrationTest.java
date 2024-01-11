@@ -39,8 +39,8 @@ public class BookingServiceImpIntegrationTest {
     void saveBookings() {
         booker = new User();
         booker.setId(1L);
-        booker.setName("Петр Петрович");
-        booker.setEmail("email@email.com");
+        booker.setName("Гарри Поттер");
+        booker.setEmail("alive_boy@email.com");
         booker = userRepository.save(booker);
 
         item = new Item();
@@ -51,7 +51,7 @@ public class BookingServiceImpIntegrationTest {
 
         User owner = new User();
         owner.setEmail("owner@mail.ru");
-        owner.setName("Никодим");
+        owner.setName("Snape");
         item.setOwner(owner);
         userRepository.save(owner);
         item = itemRepository.save(item);

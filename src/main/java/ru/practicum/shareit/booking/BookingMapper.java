@@ -8,7 +8,6 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserMapper;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +27,7 @@ public class BookingMapper {
     }
 
     public static List<BookingDto> toBookingDtoList(List<Booking> bookings) {
-        if (bookings == null) return Collections.emptyList();
+        if (bookings == null) return null;
         return bookings
                 .stream()
                 .map(BookingMapper::toBookingDto)

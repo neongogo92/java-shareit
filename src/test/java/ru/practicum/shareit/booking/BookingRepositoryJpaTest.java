@@ -30,18 +30,18 @@ public class BookingRepositoryJpaTest {
     @BeforeEach
     void saveData() {
         booker = new User();
-        booker.setName("Петя Иванов");
-        booker.setEmail("petyaTheBest@yandex.ru");
+        booker.setName("Арнольд Шварценеггер");
+        booker.setEmail("shvarc@yandex.ru");
         em.persist(booker);
 
         User owner = new User();
-        owner.setName("Саша Петров");
+        owner.setName("Брюс Уиллис>");
         owner.setEmail("zvezda@yandex.ru");
         em.persist(owner);
 
         item = new Item();
-        item.setName("Лыжи детские");
-        item.setDescription("Длина 120 см");
+        item.setName("Автомат М4А1");
+        item.setDescription("Калибр 5.56 мм");
         item.setOwner(owner);
         item.setAvailable(true);
         em.persist(item);

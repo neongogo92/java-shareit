@@ -22,16 +22,16 @@ public class BookingDtoJsonTest {
     void testBookingDto() throws Exception {
         BookingDto bookingDto = new BookingDto(
                 1L,
-                LocalDateTime.of(2023, 12, 12, 12, 12, 00),
-                LocalDateTime.of(2023, 12, 13, 12, 12, 00),
+                LocalDateTime.of(2024, 01, 11, 12, 34, 00),
+                LocalDateTime.of(2024, 01, 12, 12, 34, 00),
                 BookingStatus.APPROVED);
         bookingDto.setBooker(new UserForBookingDto(1L));
         bookingDto.setItem(new ItemForBookingDto(1L, "Иванов Иван"));
         JsonContent<BookingDto> result = json.write(bookingDto);
 
         assertThat(result).extractingJsonPathNumberValue("$.id").isEqualTo(1);
-        assertThat(result).extractingJsonPathStringValue("$.start").isEqualTo("2023-12-12T12:12:00");
-        assertThat(result).extractingJsonPathStringValue("$.end").isEqualTo("2023-12-13T12:12:00");
+        assertThat(result).extractingJsonPathStringValue("$.start").isEqualTo("2024-01-11T12:34:00");
+        assertThat(result).extractingJsonPathStringValue("$.end").isEqualTo("2024-01-12T12:34:00");
         assertThat(result).extractingJsonPathStringValue("$.status").isEqualTo("APPROVED");
         assertThat(result).extractingJsonPathNumberValue("$.booker.id").isEqualTo(1);
         assertThat(result).extractingJsonPathNumberValue("$.item.id").isEqualTo(1);

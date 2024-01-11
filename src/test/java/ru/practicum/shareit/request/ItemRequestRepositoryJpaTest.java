@@ -27,11 +27,11 @@ public class ItemRequestRepositoryJpaTest {
     void saveData() {
         requestor = new User();
         requestor.setName("Петя Иванов");
-        requestor.setEmail("petyaTheBest@yandex.ru");
+        requestor.setEmail("petya111@yandex.ru");
         em.persist(requestor);
 
         ItemRequest itemRequest = new ItemRequest();
-        itemRequest.setDescription("Нужна малиновая девятка");
+        itemRequest.setDescription("Ищу плойку с приводом");
         itemRequest.setRequestor(requestor);
         itemRequest.setCreated(LocalDateTime.now());
         em.persist(itemRequest);
@@ -53,12 +53,12 @@ public class ItemRequestRepositoryJpaTest {
     @Test
     void testFindByRequestor_IdNot_FoundOne() {
         User user = new User();
-        user.setName("Cтепан");
-        user.setEmail("stepashka@yandex.ru");
+        user.setName("Иван");
+        user.setEmail("iv@yandex.ru");
         em.persist(user);
 
         ItemRequest itemRequest = new ItemRequest();
-        itemRequest.setDescription("Моющий пылесос");
+        itemRequest.setDescription("Шуруповерт");
         itemRequest.setRequestor(user);
         itemRequest.setCreated(LocalDateTime.now());
         em.persist(itemRequest);

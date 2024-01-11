@@ -32,13 +32,13 @@ public class ItemRepositoryJpaTest {
     @BeforeEach
     void saveData() {
         owner = new User();
-        owner.setName("Петя Иванов");
-        owner.setEmail("petyaTheBest@yandex.ru");
+        owner.setName("Гарри Поттер");
+        owner.setEmail("aliveboy@yandex.ru");
         em.persist(owner);
 
         item = new Item();
-        item.setName("Лыжи детские");
-        item.setDescription("Длина 120 см");
+        item.setName("Палочка бузинная");
+        item.setDescription("Длина 15 дюймов");
         item.setOwner(owner);
         item.setAvailable(true);
         em.persist(item);
@@ -47,7 +47,7 @@ public class ItemRepositoryJpaTest {
 
     @Test
     void testFindItemsByTextByName() {
-        List<Item> resultItems = itemRepository.findItemsByText("лыжи", page);
+        List<Item> resultItems = itemRepository.findItemsByText("палочка", page);
 
         assertEquals(resultItems.size(), 1);
         Item resultItem = resultItems.get(0);
@@ -71,7 +71,7 @@ public class ItemRepositoryJpaTest {
 
     @Test
     void testFindItemsByTextWithNoFound() {
-        List<Item> resultItems = itemRepository.findItemsByText("дрель", page);
+        List<Item> resultItems = itemRepository.findItemsByText("метла", page);
 
         assertEquals(resultItems.size(), 0);
     }
@@ -100,19 +100,19 @@ public class ItemRepositoryJpaTest {
     @Test
     void testFindByItemRequest_Id() {
         User requestor = new User();
-        requestor.setName("Филлип");
-        requestor.setEmail("kirkorov@mail.ru");
+        requestor.setName("Волдеморт");
+        requestor.setEmail("noname@mail.ru");
         em.persist(requestor);
 
         ItemRequest request = new ItemRequest();
         request.setCreated(LocalDateTime.now());
         request.setRequestor(requestor);
-        request.setDescription("Срочно нужен микрофон.");
+        request.setDescription("Срочно нужна палочка.");
         em.persist(request);
 
         Item item = new Item();
-        item.setName("Микрофон");
-        item.setDescription("Имеет 5 режимов");
+        item.setName("Палочка");
+        item.setDescription("Сделана из бузины");
         item.setOwner(owner);
         item.setAvailable(true);
         item.setItemRequest(request);

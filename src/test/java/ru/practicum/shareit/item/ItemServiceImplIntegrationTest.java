@@ -41,7 +41,7 @@ public class ItemServiceImplIntegrationTest {
 
         owner = new User();
         owner.setEmail("owner@mail.ru");
-        owner.setName("Никодим");
+        owner.setName("Влад");
         item.setOwner(owner);
         owner = userRepository.save(owner);
         item = itemRepository.save(item);

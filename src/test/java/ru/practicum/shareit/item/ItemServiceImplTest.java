@@ -45,7 +45,7 @@ public class ItemServiceImplTest {
     private ItemRequestRepository itemRequestRepository;
     private ItemService itemService;
     private User user = createUser();
-    private ItemShortDto itemShortDto = new ItemShortDto(1L, "Барабан",
+    private ItemShortDto itemShortDto = new ItemShortDto(1L, "Плойка",
             "Отлично играет", true, 1L, null);
 
     @BeforeEach

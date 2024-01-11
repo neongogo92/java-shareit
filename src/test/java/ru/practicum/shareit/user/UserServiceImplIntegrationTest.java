@@ -27,8 +27,8 @@ public class UserServiceImplIntegrationTest {
     void saveUsers() {
         user = new User();
         user.setId(1L);
-        user.setName("Петр Петрович");
-        user.setEmail("email@email.com");
+        user.setName("Петр");
+        user.setEmail("e@mail.com");
         userRepository.save(user);
     }
 
