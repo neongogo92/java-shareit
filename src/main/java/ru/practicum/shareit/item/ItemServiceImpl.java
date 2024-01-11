@@ -13,11 +13,15 @@ import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
+import ru.practicum.shareit.user.UserService;
+import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.UserMapper;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
@@ -28,12 +32,14 @@ public class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
+    private final UserService userService;
 
     @Override
     public ItemShortDto addItem(long userId, ItemShortDto itemDto) {
-        User user = findUserIfExists(userId);
-        Item item = ItemMapper.toItem(itemDto, user);
-        item.setOwner(user);
+        findUserIfExists(userId);
+        UserDto user = userService.findUserById(userId);
+        Item item = ItemMapper.toItem(itemDto, UserMapper.toUser(user));
+        item.setOwner(UserMapper.toUser(user));
         item = itemRepository.save(item);
         return ItemMapper.toItemShortDto(item);
     }
@@ -62,6 +68,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto getItem(long userId, long itemId) {
         findUserIfExists(userId);
+
         Item item = findItemIfExists(itemId);
         List<Comment> comments = commentRepository.findByItem_Id(item.getId());
         if (item.getOwner().getId().equals(userId)) {
@@ -107,7 +114,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public CommentDto addComment(long userId, long itemId, CommentDto commentDto) {
-        User user = findUserIfExists(userId);
+        UserDto user = userService.findUserById(userId);
         Item item = findItemIfExists(itemId);
         List<Booking> itemBookings = bookingRepository.findByItem_IdAndBooker_IdAndEndBefore(itemId, userId,
                 LocalDateTime.now());
@@ -115,14 +122,15 @@ public class ItemServiceImpl implements ItemService {
             throw new ValidationException("Отзыв может оставить только тот пользователь, " +
                     "который брал эту вещь в аренду, и только после окончания срока аренды");
         }
-        Comment comment = commentRepository.save(CommentMapper.toComment(commentDto, user, item));
+        Comment comment = commentRepository.save(CommentMapper.toComment(commentDto, UserMapper.toUser(user), item));
         return CommentMapper.toCommentDto(comment);
     }
 
-    private User findUserIfExists(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("Пользователь с id = " + userId + " не найден."));
-    }
+    private void findUserIfExists(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new NotFoundException("Пользователь с id = " + userId + " не найден.");
+        }
+       }
 
     private Item findItemIfExists(Long itemId) {
         return itemRepository.findById(itemId)
