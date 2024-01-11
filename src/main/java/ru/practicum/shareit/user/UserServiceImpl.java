@@ -2,6 +2,7 @@ package ru.practicum.shareit.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.List;
@@ -22,31 +23,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto findUserById(Integer id) {
-        User user = userRepository.findById(id);
+    public UserDto findUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Пользователь с заданным id не найден;"));
         return UserMapper.toUserDto(user);
     }
 
     @Override
     public UserDto createUser(UserDto userDto) {
-        User user = userRepository.create(UserMapper.toUser(userDto));
+        User user = userRepository.save(UserMapper.toUser(userDto));
         return UserMapper.toUserDto(user);
     }
 
     @Override
-    public UserDto updateUser(Integer id, UserDto userDto) {
-        checkUserExists(id);
-        userDto.setId(id);
-        User user = userRepository.update(UserMapper.toUser(userDto));
+    public UserDto updateUser(Long id, UserDto userDto) {
+        User userToUpdate = findUserIfExists(id);
+        if (userDto.getName() != null) {
+            userToUpdate.setName(userDto.getName());
+        }
+        if (userDto.getEmail() != null) {
+            userToUpdate.setEmail(userDto.getEmail());
+        }
+        User user = userRepository.save(userToUpdate);
         return UserMapper.toUserDto(user);
     }
 
     @Override
-    public void deleteUserById(Integer userId) {
+    public void deleteUserById(Long userId) {
         userRepository.deleteById(userId);
     }
 
-    private void checkUserExists(Integer id) {
-        userRepository.findById(id);
+    private User findUserIfExists(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Пользователь с id = " + id + " не найден."));
     }
 }
