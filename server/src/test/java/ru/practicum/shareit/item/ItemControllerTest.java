@@ -124,11 +124,29 @@ public class ItemControllerTest {
                 .andExpect(jsonPath("$[0].requestId", is(itemShortDto.getRequestId()), Long.class));
     }
 
+    //    @Test
+//    public void addComment() throws Exception {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS"); // 6 знаков после запятой
+//        CommentDto commentDto = new CommentDto(11L, "Очень жесткая и шумная((", "Доминик", null);
+//        commentDto.setCreated(LocalDateTime.now());
+//        when(itemService.addComment(anyLong(), anyLong(), any()))
+//                .thenReturn(commentDto);
+//
+//        mvc.perform(MockMvcRequestBuilders.post("/items/1/comment")
+//                        .header("X-Sharer-User-Id", 10L)
+//                        .content(mapper.writeValueAsString(commentDto))
+//                        .characterEncoding(StandardCharsets.UTF_8)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.id", is(commentDto.getId()), Long.class))
+//                .andExpect(jsonPath("$.text", is(commentDto.getText())))
+//                .andExpect(jsonPath("$.authorName", is(commentDto.getAuthorName())))
+//                .andExpect(jsonPath("$.created", is(commentDto.getCreated().format(formatter)), String.class));
+//    }
     @Test
     public void addComment() throws Exception {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS");
-        CommentDto commentDto = new CommentDto(11L, "Очень жесткая и шумная((", "Доминик", null);
-        commentDto.setCreated(LocalDateTime.now());
+        CommentDto commentDto = new CommentDto(11L, "Очень жесткая и шумная((", "Доминик", LocalDateTime.now());
         when(itemService.addComment(anyLong(), anyLong(), any()))
                 .thenReturn(commentDto);
 
@@ -142,7 +160,13 @@ public class ItemControllerTest {
                 .andExpect(jsonPath("$.id", is(commentDto.getId()), Long.class))
                 .andExpect(jsonPath("$.text", is(commentDto.getText())))
                 .andExpect(jsonPath("$.authorName", is(commentDto.getAuthorName())))
-                .andExpect(jsonPath("$.created", is(commentDto.getCreated().format(formatter)), String.class));
+                // Сравниваем отдельные компоненты времени
+                .andExpect(jsonPath("$.year", is(commentDto.getYear())))
+                .andExpect(jsonPath("$.month", is(commentDto.getMonth())))
+                .andExpect(jsonPath("$.day", is(commentDto.getDay())))
+                .andExpect(jsonPath("$.hour", is(commentDto.getHour())))
+                .andExpect(jsonPath("$.minute", is(commentDto.getMinute())))
+                .andExpect(jsonPath("$.second", is(commentDto.getSecond())));
     }
 
 
