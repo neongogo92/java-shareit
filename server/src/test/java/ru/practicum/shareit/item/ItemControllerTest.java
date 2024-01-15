@@ -11,6 +11,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemShortDto;
+
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import java.nio.charset.StandardCharsets;
@@ -124,8 +126,9 @@ public class ItemControllerTest {
 
     @Test
     public void addComment() throws Exception {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS");
         CommentDto commentDto = new CommentDto(11L, "Очень жесткая и шумная((", "Доминик", null);
+        commentDto.setCreated(LocalDateTime.now());
         when(itemService.addComment(anyLong(), anyLong(), any()))
                 .thenReturn(commentDto);
 
@@ -139,9 +142,9 @@ public class ItemControllerTest {
                 .andExpect(jsonPath("$.id", is(commentDto.getId()), Long.class))
                 .andExpect(jsonPath("$.text", is(commentDto.getText())))
                 .andExpect(jsonPath("$.authorName", is(commentDto.getAuthorName())))
-                .andExpect(jsonPath("$.created", is(commentDto.getCreated().toString()), String.class));
-
+                .andExpect(jsonPath("$.created", is(commentDto.getCreated().format(formatter)), String.class));
     }
+
 
     private ItemDto createItemDto() {
         return new ItemDto(1L, "Apple Iphone 20 Mega Max Plus Pro", "Звонит", true,
