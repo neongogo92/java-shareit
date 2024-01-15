@@ -25,7 +25,7 @@ public class CommentDto {
             this.created = created;
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm.");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS");
         String formattedTime = this.created.format(formatter);
         this.created = LocalDateTime.parse(formattedTime, formatter);
     }
