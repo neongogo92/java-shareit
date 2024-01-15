@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -13,14 +14,18 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemShortDto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = ItemController.class)
 public class ItemControllerTest {
@@ -122,29 +127,41 @@ public class ItemControllerTest {
                 .andExpect(jsonPath("$[0].requestId", is(itemShortDto.getRequestId()), Long.class));
     }
 
+    @SneakyThrows
     @Test
     public void addComment() throws Exception {
-        CommentDto commentDto = new CommentDto(11L, "Очень жесткая и шумная((", "Доминик", LocalDateTime.now());
-        when(itemService.addComment(anyLong(), anyLong(), any()))
-                .thenReturn(commentDto);
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS"); // 6 знаков после запятой
+//        CommentDto commentDto = new CommentDto(11L, "Очень жесткая и шумная((", "Доминик", null);
+//        commentDto.setCreated(LocalDateTime.now());
+//        when(itemService.addComment(anyLong(), anyLong(), any()))
+//                .thenReturn(commentDto);
+//
+//        mvc.perform(MockMvcRequestBuilders.post("/items/1/comment")
+//                        .header("X-Sharer-User-Id", 10L)
+//                        .content(mapper.writeValueAsString(commentDto))
+//                        .characterEncoding(StandardCharsets.UTF_8)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.id", is(commentDto.getId()), Long.class))
+//                .andExpect(jsonPath("$.text", is(commentDto.getText())))
+//                .andExpect(jsonPath("$.authorName", is(commentDto.getAuthorName())))
+//                .andExpect(jsonPath("$.created", is(commentDto.getCreated().format(formatter)), String.class));
 
-        mvc.perform(MockMvcRequestBuilders.post("/items/1/comment")
-                        .header("X-Sharer-User-Id", 10L)
-                        .content(mapper.writeValueAsString(commentDto))
-                        .characterEncoding(StandardCharsets.UTF_8)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+        long itemId = 1L;
+        CommentDto commentToCreate = new CommentDto(11L, "Очень жесткая и шумная((", "Доминик", null);
+        when(itemService.addComment(anyLong(), anyLong(), any(CommentDto.class))).thenReturn(commentToCreate);
+
+        String result = mvc.perform(post("/items/{itemId}/comment", itemId)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8) // Установка кодировки
+                        .header("X-Sharer-User-Id", "1")
+                        .content(mapper.writeValueAsString(commentToCreate)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(commentDto.getId()), Long.class))
-                .andExpect(jsonPath("$.text", is(commentDto.getText())))
-                .andExpect(jsonPath("$.authorName", is(commentDto.getAuthorName())))
-                // Сравниваем отдельные компоненты времени
-                .andExpect(jsonPath("$.year", is(commentDto.getYear())))
-                .andExpect(jsonPath("$.month", is(commentDto.getMonth())))
-                .andExpect(jsonPath("$.day", is(commentDto.getDay())))
-                .andExpect(jsonPath("$.hour", is(commentDto.getHour())))
-                .andExpect(jsonPath("$.minute", is(commentDto.getMinute())))
-                .andExpect(jsonPath("$.second", is(commentDto.getSecond())));
+                .andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8);
+
+        assertEquals(mapper.writeValueAsString(commentToCreate), result);
     }
 
 

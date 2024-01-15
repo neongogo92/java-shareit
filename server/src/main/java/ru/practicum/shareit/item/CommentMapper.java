@@ -5,7 +5,6 @@ import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,14 +26,7 @@ public class CommentMapper {
         comment.setAuthor(author);
         comment.setItem(item);
         comment.setText(dto.getText());
-
-        // Создаем LocalDateTime из отдельных компонентов
-        LocalDateTime created = LocalDateTime.of(
-                dto.getYear(), dto.getMonth(), dto.getDay(),
-                dto.getHour(), dto.getMinute(), dto.getSecond()
-        );
-        comment.setCreated(created);
-
+        comment.setCreated(dto.getCreated());
         return comment;
     }
 }
