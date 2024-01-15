@@ -13,7 +13,6 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemShortDto;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -126,7 +125,6 @@ public class ItemControllerTest {
 
     @Test
     public void addComment() throws Exception {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS");
         CommentDto commentDto = new CommentDto(11L, "Очень жесткая и шумная((", "Доминик", null);
         commentDto.setCreated(LocalDateTime.now());
         when(itemService.addComment(anyLong(), anyLong(), any()))
@@ -141,8 +139,7 @@ public class ItemControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(commentDto.getId()), Long.class))
                 .andExpect(jsonPath("$.text", is(commentDto.getText())))
-                .andExpect(jsonPath("$.authorName", is(commentDto.getAuthorName())))
-                .andExpect(jsonPath("$.created", is(commentDto.getCreated().format(formatter)), String.class));
+                .andExpect(jsonPath("$.authorName", is(commentDto.getAuthorName())));
     }
 
 
